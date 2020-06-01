@@ -1,5 +1,9 @@
     <?php include_once("./classes/users.php");
-if(!empty($_SESSION)):
+    $idStatus="";
+    $FullName="";
+    $Email="";
+    $status="";
+if( isset($_SESSION["user"])):
     $idStatus=$_SESSION["user"][0];
     $FullName=$_SESSION["user"][1];
     $Email=$_SESSION["user"][2];
@@ -43,6 +47,7 @@ header("Location:home.php");
                 </ul>
                </div>
            </div>
+           <?php if(isset($_SESSION["user"]) && !empty($_SESSION["user"])):?>
            <div class="page-wrapper">
                <div class="page-content">
                    <div class="head-btns">
@@ -76,6 +81,7 @@ header("Location:home.php");
                             </table>
                        </div>
         </section>
+<?php endif;?>
        </div>
 
 
