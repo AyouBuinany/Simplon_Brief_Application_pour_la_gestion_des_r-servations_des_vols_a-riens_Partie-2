@@ -2,6 +2,12 @@
 include_once './classes/ClassFlight.php';
 include_once './classes/users.php';
 $flight_list= new flights_list();
+
+//tester session
+if(empty($_SESSION['user'])){
+    header('Location:login.php');
+  }
+
 $messageSession="";
   if(!empty($_SESSION['flying_from']) && !empty($_SESSION['flying_to']) ){
        $flying_to= $_SESSION['flying_to'];
@@ -12,32 +18,11 @@ $messageSession="";
                  $row=$result->num_rows;
                  if(isset($_SESSION["user"])){
                          $messageSession="
-                             <h3 style='margin: auto; text-align: center; font-size:27px'> Welcome " .$_SESSION["user"][1]. " To Morocco AirLines  From $flying_from To $flying_to ";
+                             <h3 style='margin: auto; text-align: center; font-size:27px'> Welcome <span style='color:#f07d43'>" .$_SESSION["user"][1]. "  </span>To Morocco AirLines  From $flying_from To $flying_to ";
                              "</h3>" ;
                                               }
                         }
                                                                              }
-
-/*user*/
-$admin= new users();
-//show
-if(!empty($_GET["show"])){
-    $query=$admin->show($_GET["show"]);
-    $show=mysqli_num_rows($query);
-}
-//cancel
-if(!empty($_GET["cancel"])){
-$admin->cancel($_SESSION["user"][0]);
-}
-//add
-if(isset($_POST["ajouter"])){
-    $admin->addFlight();
-}
-if(!empty($_SESSION["user"][4]) && $_SESSION["user"][4]=='Admin'){
-    $add="<button type='button' id='add' class='btn btn-success'>+</button>" ;
-}else{
-    $add="";
-}
 
 ?>
 
@@ -65,8 +50,7 @@ if(!empty($_SESSION["user"][4]) && $_SESSION["user"][4]=='Admin'){
                 <ul id="fixed-ul">
                     <li><a href="home.php">Home</a></li>
                     <li><a href="about_us.php">About us</a></li>
-                    <li>
-                    <a href="profile.php"><img src="./img/profile.png" alt="user" width="40"></a></li>
+                    <li><a href="profileUser.php"><img src="./img/profile.png" alt="user" width="40"></a></li>
                 </ul>
             </div>
         </div>
@@ -105,78 +89,13 @@ if(!empty($_SESSION["user"][4]) && $_SESSION["user"][4]=='Admin'){
                 <td ><?= $vol['returningDate'];  ?></td>
                 <td ><?= $vol['seats']; ?></td>
                 <td>
-                    <?php if($_SESSION["user"][4]=='User'){?>
                 <a href="reserver.php?reserver=<?= $vol['id'];  ?>" class="badge badge-primary p-3" id="reserver">RESERVER</a>
-        <?php }else if($_SESSION["user"][4]=='Admin'){?>
-            <a href="reservation.php?show=<?= $vol['id'];  ?>" class="badge badge-primary p-3" id="reserver">Show</a>
-            <a href="reservation.php?cancel=<?= $vol['id'];  ?>" class="badge badge-primary p-3" id="reserver">Cancel</a>
-
-        <?php }?>
                 </td>
             </tr>
             <?php endwhile; ?>
         <?php endif; ?>
         </tbody>
     </table>
-</div>
-<?php
- if(isset($show)>0){
-     $details=mysqli_fetch_object($query);?>
-<div class="alert alert-success" role="alert"  id="alert">
-<a href="reservation.php" class="close"   onclick="document.getElementById('alert').style.display='none';">
-  <span aria-hidden="true">&times;</span>
- </a>
-  <h4 class="alert-heading"> Welcome To flight From  <?= "$details->flyingFrom To $details->flyingTo"  ;?></h4>
-  <p>Number of seats left  <b><?= $details->seats; ?></p></b>
-  <hr>
-  <p class="mb-0">Number seats reserver From Adult is <b><?= $details->seats_Adult; ?></b>  .</p>
-  <p class="mb-0">Number seats reserver From Children is <b><?= $details->seats_Children; ?></b>  .</p>
-  </div>
-<?php }?>
-<div style="text-align:center;">
-<?=$add;?>
-</div>
-<div  id="inpContainer" class="inputs-container2" style="display:none;">
-    <br>
-    <form action="" method="POST" class="C_reserve">
-<table id="tableForm">
-    <tr>
-        <th> <label for="">Flying From</label>   </th>
-        <td> <input type="text" placeholder ="Flying From" name="FlyingFrom" class="form-control"/></td> 
-    </tr>
-    <tr>
-            <th><label for="">Flying To</label>  </th>
-            <td> <input type="text" placeholder="Flying To"  name="FlyingTo" class="form-control"/></td>
-    </tr>
-
-        <tr>
-                <th>
-                <label for="dateDebut">Date Departing</label>
-                </th>
-                <td>
-                <input type="date" id="departing" required name="departing" class="form-control" placeholder="departing">
-                </td>
-           </tr>
-
-            <tr>
-                    <th>
-                    <label for="dateFin">Date returning</label></th>
-                    <td> <input type="date"  id="returning" required name="returning" class="form-control" placeholder="returning" ></td>
-            </tr>
-    <tr>
-            <th>
-            <label for="dateFin">Seats</label>
-            </th>
-            <td> <input type="text" placeholder="Seats"  name="Seats"  class="form-control"/></td>
-            <td> <input type="hidden" placeholder="id_user"  name="id_user"  class="form-control" value="<?= $_SESSION["user"][0];?>"/></td>
-    </tr>
-<tr>
-        <th colspan="2"><button type="submit" class="btn btn-primary" name="ajouter">Ajouter</button></th>
-</tr>
-    </table>
-</form>
-</div>
-
 </div>
     <div class="footer-div">
                <div class="footer-item">

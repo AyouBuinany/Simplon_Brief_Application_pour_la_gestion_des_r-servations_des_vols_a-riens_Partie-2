@@ -2,9 +2,11 @@
 include_once 'config.php';
 include "./classes/ClassFlight.php";
 $flying= new flights_list();
-$next='login.php';
+$next='';
+if(empty($_SESSION['user'])){
+  header('Location:login.php');
+}
 if(isset($_POST["Show_Flights"])){
-  echo "wa3ak";
   $_SESSION["flying_from"]=$_POST["flying_from"];
   $_SESSION["flying_to"]=$_POST["flying_to"];
   if(isset($_SESSION['user'])){
@@ -51,7 +53,7 @@ $rows=mysqli_num_rows($result);
             </div>
         </div>
         <div class="entry-title">
-            <h3>Why Morocco AirLines</h3>
+            <h3>Welcome user <span style="color:#f07d43"> <?php echo $_SESSION['user'][1];?></span> in Morocco AirLines</h3>
             <p><a href="about_us.php">Discover more</a></p>
         </div>
     </div>

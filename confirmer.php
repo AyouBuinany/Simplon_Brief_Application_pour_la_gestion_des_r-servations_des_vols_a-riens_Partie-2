@@ -1,6 +1,12 @@
 <?php
 include './classes/Classreservation.php';
 $ShowReservation= new reservations();
+
+//tester session
+if(empty($_SESSION['user'])){
+    header('Location:login.php');
+  }
+
 $last_Id=$_GET["id_reservation"];
 $fetchRow=$ShowReservation->AfficheReservation($last_Id);
 if(isset($fetchRow)){
@@ -46,7 +52,7 @@ if(isset($fetchRow)){
                     <ul>
                         <li><a href="home.php">Home</a></li>
                         <li><a href="about_us.php">About us</a></li>
-                        <li><a href="reservation.php">reservation</a></li>
+                        <li><a href="profileUser.php"><img src="./img/profile.png" alt="user" width="40"></a></li>
                     </ul>
                 </div>
             </div>
@@ -85,7 +91,7 @@ if(isset($fetchRow)){
           <p> Seats children : <strong> <?php echo $children;?></strong></p>
           <p> travel class: <strong> <?php echo $TravelClass;?></strong></p>
           <p> price : <strong> <?php echo $Price;?></strong></p>
-          <div id="c_bien_confirm"><a href="profile.php" name="congirmer" id="confirmer" onclick="return confirm('Bien Confirmer');">Confirmer</a></div>
+          <div id="c_bien_confirm"><a href="profileUser.php" name="congirmer" id="confirmer" onclick="return confirm('Bien Confirmer');">Confirmer</a></div>
           </div>
         </div>
 

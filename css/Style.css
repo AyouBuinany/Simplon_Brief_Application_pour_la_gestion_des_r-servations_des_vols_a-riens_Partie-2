@@ -80,7 +80,7 @@ body{
   }
   .entry-title{
     text-align: center;
-    margin-top: 140px;
+    margin-top: 190px;
     font-size: 26px;
   }
   .entry-title p{
@@ -542,7 +542,6 @@ z-index: 1;
 }
 #c_bien_confirm a{
     position: relative;
-    top: 6px;
 }
 #fixed{
     font-size: 32px;

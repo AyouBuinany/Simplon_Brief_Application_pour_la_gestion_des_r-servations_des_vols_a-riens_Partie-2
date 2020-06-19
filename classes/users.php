@@ -17,7 +17,7 @@ class users{
           $user=mysqli_fetch_row($result);
           $_SESSION["flash"]["success"]='Vous êtes maintenant connecté.';
               $_SESSION['user'] = $user;
-           return $user;
+           return $_SESSION['user'];
           }else{
              echo "<script> alert('Identifiant ou mot de passe incorrecte .'); </script>";
           }
@@ -57,12 +57,12 @@ class users{
                                                                             }
     //button cancel
     //Admin Button Cancel $_GET["cancel"]
-    public function cancel($user){
-            $id=$_GET["cancel"];
-            $id_user=$user;
-            $query= "INSERT INTO cancel set id_cancel=$id,id_user=$id_user";
+    public function cancel($id_user, $idFlight){
+            $query= "UPDATE  flights_list set statusFlight='cancel' where id=$idFlight AND id_user=$id_user";
             $result= request($query) or die ("sorry id_cancel deja exist ");
-            return  header("Location:reservation.php");
+            if($result){
+              return true;
+            }
     }
     //admin Button show
     public function show($show){
@@ -74,26 +74,25 @@ class users{
 
         //Admin Button add flying
        public function addFlight(){
-        $flying_from=$_POST["FlyingFrom"];
-        $flying_to=$_POST["FlyingTo"];
-        $departingDate=$_POST["departing"];
-        $returningDate=$_POST["returning"];
-        $seats=$_POST["Seats"];
-        $id_user=$_POST["id_user"];
+        $flying_from=htmlspecialchars($_POST["FlyingFrom"]);
+        $flying_to=htmlspecialchars($_POST["FlyingTo"]);
+        $departingDate=htmlspecialchars($_POST["departing"]);
+        $returningDate=htmlspecialchars($_POST["returning"]);
+        $seats=htmlspecialchars($_POST["Seats"]);
+        $id_user=htmlspecialchars($_POST["id_user"]);
    $query="INSERT INTO flights_list SET FlyingFrom='$flying_from', FlyingTo='$flying_to', departingDate='$departingDate',returningDate='$returningDate',seats='$seats',id_user=$id_user";
    $result=request($query) or die("Sorry not add flying");
    if($result){
-    return header("Location:reservation.php");
+    return header("refresh:0");
    }
   }
 //users
-function AfficheAjax($status,$id_status){
-  if($status=="Admin"){
-    $query="SELECT t.id,t.flyingFrom,t.flyingTo,t.departingDate,t.returningDate,t.seats from users u,flights_list t where u.id=t.id_user AND u.id=$id_status";
+function AfficheAjax($id_status,$query){
+   /* $query="SELECT t.id,t.flyingFrom,t.flyingTo,t.departingDate,t.returningDate,t.seats from users u,flights_list t where u.id=t.id_user AND u.id=$id_status";
     }
     else{
       $query="SELECT t.id_reservation,t.FullName,t.numeroTel,t.email,f.flyingFrom,f.flyingTo,t.departingDate,t.returningDate,(t.Adult+t.children) as 'Seats' from users u,reservation t,flights_list f where u.id=t.id_users AND f.id=t.id_flight AND u.id=$id_status";
-    }
+    }*/
   $result=request($query);
     return  $result;
 }

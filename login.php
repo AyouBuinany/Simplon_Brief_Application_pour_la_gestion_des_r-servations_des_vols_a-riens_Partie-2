@@ -1,12 +1,17 @@
 
 <?php  include_once './classes/users.php';
+print_r($_SESSION);
 $usersNew= new users();
 if(isset($_POST["login"])){
   $userName=htmlspecialchars($_POST['username']);
   $password= htmlspecialchars($_POST["password"]);
   $status= htmlspecialchars($_POST["status"]);
 if($usersNew->login($userName,$password,$status)){
-    header("Location:reservation.php");
+    $status=$usersNew->login($userName,$password,$status)[4];
+    if($status=='admin')
+    header("Location:pageGestion.php");
+    else
+        header("Location:home.php");
 }
 }
 ?>
@@ -30,7 +35,6 @@ if($usersNew->login($userName,$password,$status)){
             </div>
             <div id="menu">
                 <ul>
-                    <li><a href="home.php">Home</a></li>
                     <li><a href="register.php">Inscription</a></li>
                 </ul>
             </div>

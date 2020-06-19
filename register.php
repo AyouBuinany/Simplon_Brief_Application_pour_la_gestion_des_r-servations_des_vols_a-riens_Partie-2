@@ -49,7 +49,6 @@ if(isset($_POST["inscrire"])){
             </div>
             <div id="menu">
                 <ul>
-                    <li><a href="home.php">Home</a></li>
                     <li><a href="login.php">Login</a></li>
                 </ul>
             </div>

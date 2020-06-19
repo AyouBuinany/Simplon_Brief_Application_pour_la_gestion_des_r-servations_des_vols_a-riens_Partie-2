@@ -1,6 +1,12 @@
 <?php
 include './classes/Classreservation.php';
 $OneReservation= new reservations();
+
+//tester session
+if(empty($_SESSION['user'])){
+    header('Location:login.php');
+  }
+
 $lastId="";
 $fullName="";
 if(isset($_POST["reservation"])){
@@ -42,6 +48,7 @@ if(isset($_POST["reservation"])){
                 <ul>
                     <li><a href="home.php">Home</a></li>
                     <li><a href="about_us.php">About us</a></li>
+                    <li><a href="profileUser.php"><img src="./img/profile.png" alt="user" width="40"></a></li>
                 </ul>
             </div>
         </div>
