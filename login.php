@@ -1,6 +1,5 @@
 
 <?php  include_once './classes/users.php';
-print_r($_SESSION);
 $usersNew= new users();
 if(isset($_POST["login"])){
   $userName=htmlspecialchars($_POST['username']);
